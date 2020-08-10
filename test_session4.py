@@ -8,6 +8,25 @@ import re
 import math
 from decimal import Decimal
 
+README_CONTENT_CHECK_FOR = [
+    'Qualean',
+    'init',
+    'add',
+    'or',
+    'bool',
+    'eq',
+    'float',
+    'sqrt',
+    'repr',
+    'str',
+    'le',
+    'lt',
+    'gt',    
+    'ge',
+    'mul',  
+    'invertsign'  
+]
+
 
 def test_readme_exists():
     assert os.path.isfile("README.md"), "README.md file missing!"
@@ -23,6 +42,19 @@ def test_readme_file_for_formatting():
     content = f.read()
     f.close()
     assert content.count("#") >= 10
+    
+def test_readme_proper_description():
+    READMELOOKSGOOD = True
+    f = open("README.md", "r",encoding="utf-8")
+    content = f.read()
+    f.close()
+    missing = []
+    for c in README_CONTENT_CHECK_FOR:
+        if c not in content:
+            READMELOOKSGOOD = False
+            missing.append(c)
+            #pass
+    assert READMELOOKSGOOD == True, "You have not described all the functions/class well in your README.md file" + str(missing)
 
 def test_function_name_had_cap_letter():
     functions = inspect.getmembers(session4, inspect.isfunction)
@@ -130,12 +162,12 @@ def test_function_mul_invalid_input():
 def test_invert_sign():
     q1 = session4.Qualean(1)
     q2 = q1.__invertsign__()
-    assert q2.real == -q1.real and q2.img == -q1.img
+    assert q2.real == -q1.real and q2.img == -q1.img, "invert_sign operation changes sign of both real and imaginary parts"
     
 def test_float():
     q1 = session4.Qualean(1)
     val = float(q1)
-    assert q1.real == val
+    assert q1.real == val, " Float value of object must be equal to real value"
 
 def test_sum_100_times():
     q1 = session4.Qualean(1)
@@ -148,7 +180,38 @@ def test_sum_million_times():
     q1 = session4.Qualean(0)
     for _ in range(1000000):
         q1 = q1 + session4.Qualean(random.choice([-1,0,1]))       
-    assert not(math.isclose(q1.real, 0.0))
+    assert math.isclose(q1.real, 0.0, rel_tol=500.0)    
+
+def test_bool():
+    q1 = session4.Qualean(1)
+    q2 = session4.Qualean(0)
+    assert q1 
+    assert not(q2)    
+    
+def test_and():
+    q1 = session4.Qualean(0)
+    q2 = session4.Qualean(1)
+    assert not(q1 and q2)
+    
+def test_or():
+    q1 = session4.Qualean(0)
+    q2 = session4.Qualean(1)
+    assert q1 or q2
+
+def test_sqrt_decimal():
+    q1 = session4.Qualean(1)
+    q1.real = abs(q1.real)
+    q2 = q1.__sqrt__()
+    q3 =  math.sqrt(Decimal(q1.real))    
+    assert math.isclose(q2, q3)
+
+def test_mixed_operation():
+    q1 = session4.Qualean(1)
+    q2 = session4.Qualean(0)
+    q3 = session4.Qualean(-1)        
+    assert q1*q2+q3==q3
+   
+
         
 
     

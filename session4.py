@@ -38,17 +38,16 @@ class Qualean:
             q.real = self.real + float(obj)
             return q
         else:
-            raise ValueError(" argument to add must be Qualean, Decimal, float, int")   
+            raise ValueError(" argument to add must be Qualean, Decimal, float, int")
     
-    def true(self):
-        if self is None:
-            return False
-        return math.isclose(self.real, 0.0) and math.isclose(self.img, 0.0)        
+    def __bool__(self):
+        return self.real != 0.0
     
     def __and__(self, obj):
-        if self is None:
-            return False
-        return self.true() and obj.true()
+        return self.__bool__() and bool(obj)
+        
+    def __or__(self, obj):
+        return self.__bool__() or bool(obj)
         
     def __repr__(self):
         return "Real: {0} Imaginary: {1}".format(self.real, self.img)
@@ -95,7 +94,7 @@ class Qualean:
         if isinstance(obj, Qualean):
             return self.real >= obj.real
         else:
-            raise ValueError(" Argument to __add__ must be instance of Qualean")
+            raise ValueError(" Argument ge must be instance of Qualean")
             
     def __le__(self, obj):
         if obj is None:
@@ -103,7 +102,7 @@ class Qualean:
         if isinstance(obj, Qualean):
             return self.real <= obj.real
         else:
-            raise ValueError(" Argument to __add__ must be instance of Qualean")            
+            raise ValueError(" Argument to __le__ must be instance of Qualean")            
     
     def __lt__(self, obj):
         if obj is None:

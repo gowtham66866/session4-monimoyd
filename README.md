@@ -54,14 +54,18 @@ This method takes another Qualean object and returns true if the current object 
 
 This method inverts teh sign of both real and imaginary part of Qualean object
 
-## sqrt:
+##  sqrt
 
-This method finds the square root of the given Qualean object. In case real part is negative, it populates the imaginary part of object
+This method sqrt finds the square root  of the given Qualean object. In case real part is negative, it populates the imaginary part of object
 
 
 ## __and__:
 
-This method takes anotehr object as argument and performs return Boolean value of and operation
+This method takes another object as argument and performs return Boolean value of and operation
+
+## __or__:
+
+This method takes anotehr object as argument and performs return Boolean value of or operation
 
 ## __bool__:
 
